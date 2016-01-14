@@ -59,6 +59,54 @@
             android:id="@+id/zvaluedisplay"
             />
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/xvaluerot"
+        android:layout_below="@+id/zvalue">
+        <TextView
+            android:text="xrot:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/xvaluerotdisplay"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/yvaluerot"
+        android:layout_below="@+id/xvaluerot">
+        <TextView
+            android:text="yrot:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/yvaluerotdisplay"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/zvaluerot"
+        android:layout_below="@+id/yvaluerot">
+        <TextView
+            android:text="zrot:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/zvaluerotdisplay"
+            />
+    </LinearLayout>
 
 
 </RelativeLayout>
