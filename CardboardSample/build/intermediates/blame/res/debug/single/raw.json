@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/res/merged/debug/raw/grid_fragment.shader",
+        "source": "/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/res/raw/grid_fragment.shader"
+    },
+    {
+        "merged": "/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/res/merged/debug/raw/light_vertex.shader",
+        "source": "/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/res/raw/light_vertex.shader"
+    },
+    {
+        "merged": "/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/res/merged/debug/raw/passthrough_fragment.shader",
+        "source": "/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/res/raw/passthrough_fragment.shader"
+    }
+]

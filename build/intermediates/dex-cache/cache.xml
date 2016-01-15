@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/home/manthan/Development/android/sdk/android-sdk-linux/extras/android/m2repository/com/android/support/support-annotations/23.1.1/support-annotations-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8d680ba5a623724d1fb0e81c36a790f023a6cede">
+        <dex dex="/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/pre-dexed/debug/support-annotations-23.1.1_96251dce2b424497ea0ac6a019499c874539cbae.jar" />
+    </item>
+    <item
+        jar="/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="6cbc7773921fcfedbe55657578f0cbfe614778dc">
+        <dex dex="/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/pre-dexed/debug/com.android.support-support-v4-23.1.1_d176c2c9a0c174a26f229068d78b7849b887bb50.jar" />
+    </item>
+    <item
+        jar="/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/incremental-classes/debug/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="7e6e72c3f2bf90b91aaba99e77c1b0aa7938eb2f">
+        <dex dex="/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/pre-dexed/debug/classes_3450c082e2268367242c8b6d97478624905755e7.jar" />
+    </item>
+    <item
+        jar="/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/libs/cardboard.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="32c8e30df7bdcbf982603f70aeaf89e207f44219">
+        <dex dex="/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/pre-dexed/debug/cardboard_7c6e52d1a406f63d9f48c5e31684989ed894a278.jar" />
+    </item>
+    <item
+        jar="/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/libs/internal_impl-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
+        <dex dex="/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/pre-dexed/debug/internal_impl-23.1.1_115057896840a0f213d0ba8456a8dc662000efd4.jar" />
+    </item>
+    <item
+        jar="/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="5c5699834e9722f1c288fea2de82725d078ba127">
+        <dex dex="/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-23.1.1_b5b6f1f8f1a87e471becb9f96b089cdfea6ed5a8.jar" />
+    </item>
+    <item
+        jar="/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="a4532225bb177d523e197e376139e5bb37b4129b">
+        <dex dex="/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/pre-dexed/debug/instant-run_3c5e9acfaa707128a82c4db5fe0bbe82b3e47633.jar" />
+    </item>
+    <item
+        jar="/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/libs/audio.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="74fcb5c43eb6843ec691a1a1013a4d38eac2de41">
+        <dex dex="/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/pre-dexed/debug/audio_f9fc4bf55d4ad455b35c7516e7e96b95d5e7ae11.jar" />
+    </item>
+
+</items>
