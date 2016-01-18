@@ -107,6 +107,11 @@
             android:id="@+id/zvaluerotdisplay"
             />
     </LinearLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/zvaluerot"
+        android:id="@+id/pairedList"/>
 
 
 </RelativeLayout>

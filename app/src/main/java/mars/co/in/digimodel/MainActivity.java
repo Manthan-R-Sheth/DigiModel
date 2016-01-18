@@ -1,14 +1,26 @@
 package mars.co.in.digimodel;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.List;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private final float[] deltaRotationVector = new float[4];
     private float timestamp;
     SensorEventListener mAccelerometerSensorListener,mGyroSensorListener;
+    BluetoothAdapter btAdapter;
+    ArrayAdapter<String> pairedArrayAdapter;
+    ListView pairedList;
 
 
     @Override
@@ -36,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         msensorManager.registerListener(mGyroSensorListener,msensorg,SensorManager.SENSOR_DELAY_NORMAL);
         msensorManager.registerListener(mAccelerometerSensorListener,msensor,SensorManager.SENSOR_DELAY_NORMAL);
 
-
+        pairedArrayAdapter=new ArrayAdapter<String>(this,R.layout.device_name);
         mAccelerometerSensorListener= new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
@@ -137,8 +152,46 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
+        bluetoothfunc();
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Set<BluetoothDevice> pairedDevices = btAdapter.getBondedDevices();
+        if(pairedDevices.size()!=0){
+            for(BluetoothDevice device:pairedDevices){
+
+                pairedArrayAdapter.add(device.getName());
+            }
+        }
+        pairedList.setAdapter(pairedArrayAdapter);
+        Log.e("Devices",pairedDevices.toString());
+    }
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        if (btAdapter != null)
+        {
+            btAdapter.cancelDiscovery();
+        }
+    }
+
+    private void bluetoothfunc() {
+
+        btAdapter=BluetoothAdapter.getDefaultAdapter();
+        if(btAdapter==null){Log.e("Bluetooth support","Absent");}
+        else{
+            if(!btAdapter.isEnabled()) {
+                Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(turnOn, 0);
+            }
+        }
+        }
+
+
 
     private void mapping(){
         xvalue=(TextView)findViewById(R.id.xvaluedisplay);
@@ -147,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
         xvaluerot=(TextView)findViewById(R.id.xvaluerotdisplay);
         yvaluerot=(TextView)findViewById(R.id.yvaluerotdisplay);
         zvaluerot=(TextView)findViewById(R.id.zvaluerotdisplay);
+        pairedList=(ListView)findViewById(R.id.pairedList);
 
     }
 
