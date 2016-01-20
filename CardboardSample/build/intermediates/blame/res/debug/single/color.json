@@ -8,6 +8,10 @@
         "source": "/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/res/color/abc_primary_text_material_light.xml"
     },
     {
+        "merged": "/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/res/merged/debug/color/abc_background_cache_hint_selector_material_dark.xml",
+        "source": "/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/res/color/abc_background_cache_hint_selector_material_dark.xml"
+    },
+    {
         "merged": "/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/res/merged/debug/color/abc_secondary_text_material_light.xml",
         "source": "/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/res/color/abc_secondary_text_material_light.xml"
     },
@@ -34,5 +38,9 @@
     {
         "merged": "/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/res/merged/debug/color/switch_thumb_material_light.xml",
         "source": "/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/res/color/switch_thumb_material_light.xml"
+    },
+    {
+        "merged": "/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/res/merged/debug/color/abc_background_cache_hint_selector_material_light.xml",
+        "source": "/home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/res/color/abc_background_cache_hint_selector_material_light.xml"
     }
 ]

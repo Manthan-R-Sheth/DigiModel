@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:2:1-38:12
+ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:2:1-43:12
 	package
 		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:3:11-72
 	android:versionName
@@ -45,55 +45,59 @@ ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardS
 		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:15:68-91
 	android:name
 		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:15:19-67
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:18:5-19:23
+	android:name
+		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:18:22-76
 uses-sdk
-ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:17:5-73
+ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:22:5-73
 MERGED from [com.android.support:appcompat-v7:23.1.1] /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/AndroidManifest.xml:20:5-43
 MERGED from [com.android.support:support-v4:23.1.1] /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/AndroidManifest.xml:20:5-43
 	android:targetSdkVersion
-		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:17:42-71
+		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:22:42-71
 		INJECTED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml
 		INJECTED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml
 	android:minSdkVersion
-		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:17:15-41
+		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:22:15-41
 		INJECTED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml
 		INJECTED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml
 uses-feature#0x00020000
-ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:18:5-78
+ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:23:5-78
 	android:glEsVersion
-		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:18:19-51
+		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:23:19-51
 	android:required
-		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:18:52-75
+		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:23:52-75
 application
-ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:20:5-36:19
+ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:25:5-41:19
 MERGED from [com.android.support:appcompat-v7:23.1.1] /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:support-v4:23.1.1] /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/AndroidManifest.xml:22:5-20
 	android:label
-		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:23:13-45
+		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:28:13-45
 	android:allowBackup
-		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:21:13-39
+		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:26:13-39
 	android:icon
-		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:22:13-49
+		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:27:13-49
 activity#com.google.vrtoolkit.cardboard.samples.treasurehunt.MainActivity
-ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:25:9-35:20
+ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:30:9-40:20
 	android:screenOrientation
-		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:28:17-54
+		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:33:17-54
 	android:label
-		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:27:17-49
+		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:32:17-49
 	android:configChanges
-		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:29:17-78
+		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:34:17-78
 	android:name
-		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:26:17-45
+		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:31:17-45
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER+com.google.intent.category.CARDBOARD
-ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:30:13-34:29
+ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:35:13-39:29
 action#android.intent.action.MAIN
-ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:31:17-69
+ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:36:17-69
 	android:name
-		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:31:25-66
+		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:36:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:32:17-77
+ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:37:17-77
 	android:name
-		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:32:27-74
+		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:37:27-74
 category#com.google.intent.category.CARDBOARD
-ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:33:17-81
+ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:38:17-81
 	android:name
-		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:33:27-78
+		ADDED from /home/manthan/Development/android/Workspace/cardboard-java/CardboardSample/src/main/AndroidManifest.xml:38:27-78
