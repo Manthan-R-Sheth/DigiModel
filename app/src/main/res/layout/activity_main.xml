@@ -107,11 +107,24 @@
             android:id="@+id/zvaluerotdisplay"
             />
     </LinearLayout>
-    <ListView
-        android:layout_width="match_parent"
+
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/zvaluerot"
-        android:id="@+id/pairedList"/>
+        android:text="Start Sending"
+        android:id="@+id/startsending"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop Sending"
+        android:id="@+id/stopsending"
+        android:layout_alignBottom="@+id/startsending"
+        android:layout_alignRight="@+id/zvaluerot"
+        android:layout_alignEnd="@+id/zvaluerot" />
 
 
 </RelativeLayout>

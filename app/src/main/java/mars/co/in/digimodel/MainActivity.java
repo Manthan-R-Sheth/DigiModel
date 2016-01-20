@@ -10,15 +10,26 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.DhcpInfo;
+import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.List;
 import java.util.Set;
 
@@ -33,15 +44,18 @@ public class MainActivity extends AppCompatActivity {
     private final float[] deltaRotationVector = new float[4];
     private float timestamp;
     SensorEventListener mAccelerometerSensorListener,mGyroSensorListener;
-    BluetoothAdapter btAdapter;
-    ArrayAdapter<String> pairedArrayAdapter;
-    ListView pairedList;
-
+    Button start,stop;
+    WifiManager wifiManager;
+    DhcpInfo dhcpInfo;
+    Socket client=null;
+    OutputStream outputStream;
+    DataOutputStream dataOutputStream;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        startActivity(new Intent("android.settings.WIFI_SETTINGS"));
         msensorManager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         mapping();
         gravity=new double[3];
@@ -51,25 +65,12 @@ public class MainActivity extends AppCompatActivity {
         msensorManager.registerListener(mGyroSensorListener,msensorg,SensorManager.SENSOR_DELAY_NORMAL);
         msensorManager.registerListener(mAccelerometerSensorListener,msensor,SensorManager.SENSOR_DELAY_NORMAL);
 
-        pairedArrayAdapter=new ArrayAdapter<String>(this,R.layout.device_name);
         mAccelerometerSensorListener= new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 Sensor mysensor=event.sensor;
                 Log.e("Insidefirst","Accelero");
                 if(mysensor.getType()==Sensor.TYPE_ACCELEROMETER){
-
-
-//            float x = event.values[0];
-//            float y = event.values[1]; //accelerations with the effect of gravity included.
-//            float z = event.values[2];
-//            long curtime= System.currentTimeMillis();
-//            if((curtime-lastupdate)>100){
-//                long diffTime = (curtime - lastupdate);
-//                lastupdate = curtime;
-//            }
-
-
                     long curtime= System.currentTimeMillis();
                     if((curtime-lastupdate)>100) {
                         lastupdate = curtime;
@@ -152,46 +153,42 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
-        bluetoothfunc();
+
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               Toast.makeText(getApplication(),"Sending Started",Toast.LENGTH_LONG).show();
+                wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+                dhcpInfo = wifiManager.getDhcpInfo();
+                new ConnectClientToServer().execute(Protocols.convertIntIPtoStringIP(dhcpInfo.serverAddress));
+
+            }
+        });
+
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplication(),"Sending Stoped",Toast.LENGTH_LONG).show();
+                try {
+                    client.close();
+                }
+                catch (Exception e){
+                    Log.e("stopped",e.toString());
+                }
+            }
+        });
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Set<BluetoothDevice> pairedDevices = btAdapter.getBondedDevices();
-        if(pairedDevices.size()!=0){
-            for(BluetoothDevice device:pairedDevices){
-
-                pairedArrayAdapter.add(device.getName());
-            }
-        }
-        pairedList.setAdapter(pairedArrayAdapter);
-        Log.e("Devices",pairedDevices.toString());
     }
     @Override
     protected void onDestroy()
     {
         super.onDestroy();
-        if (btAdapter != null)
-        {
-            btAdapter.cancelDiscovery();
-        }
     }
-
-    private void bluetoothfunc() {
-
-        btAdapter=BluetoothAdapter.getDefaultAdapter();
-        if(btAdapter==null){Log.e("Bluetooth support","Absent");}
-        else{
-            if(!btAdapter.isEnabled()) {
-                Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(turnOn, 0);
-            }
-        }
-        }
-
-
 
     private void mapping(){
         xvalue=(TextView)findViewById(R.id.xvaluedisplay);
@@ -200,7 +197,8 @@ public class MainActivity extends AppCompatActivity {
         xvaluerot=(TextView)findViewById(R.id.xvaluerotdisplay);
         yvaluerot=(TextView)findViewById(R.id.yvaluerotdisplay);
         zvaluerot=(TextView)findViewById(R.id.zvaluerotdisplay);
-        pairedList=(ListView)findViewById(R.id.pairedList);
+        start=(Button)findViewById(R.id.startsending);
+        stop=(Button)findViewById(R.id.stopsending);
 
     }
 
@@ -218,5 +216,39 @@ public class MainActivity extends AppCompatActivity {
         msensorManager.unregisterListener(mAccelerometerSensorListener);
         msensorManager.unregisterListener(mGyroSensorListener);
 
+    }
+
+    class ConnectClientToServer extends AsyncTask<String,String,Boolean>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Toast.makeText(getApplication(),"Socket Started",Toast.LENGTH_LONG).show();
+
+
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try {
+                client=new Socket();
+                InetAddress inetAddress = InetAddress.getByName(params[0]);
+                client.connect(new InetSocketAddress(inetAddress,8080));
+                outputStream= client.getOutputStream();
+                dataOutputStream=new DataOutputStream(outputStream);
+                dataOutputStream.writeUTF(linear_acceleration[0]+"/");
+                dataOutputStream.flush();
+            }
+            catch (Exception e){
+                Log.e("IP address probs",e.toString());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            Toast.makeText(getApplication(),"Socket connection done",Toast.LENGTH_LONG).show();
+
+        }
     }
 }

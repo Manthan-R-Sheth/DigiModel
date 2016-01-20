@@ -3,9 +3,26 @@
     package="mars.co.in.digimodel" >
 
     <uses-permission
-        android:name="android.permission.BLUETOOTH" />
+        android:name="android.permission.ACCESS_WIFI_STATE"
+        android:required="true" />
     <uses-permission
-        android:name="android.permission.BLUETOOTH_ADMIN" />
+        android:name="android.permission.CHANGE_WIFI_STATE"
+        android:required="true" />
+    <uses-permission
+        android:name="android.permission.CHANGE_NETWORK_STATE"
+        android:required="true" />
+    <uses-permission
+        android:name="android.permission.INTERNET"
+        android:required="true" />
+    <uses-permission
+        android:name="android.permission.ACCESS_NETWORK_STATE"
+        android:required="true" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:required="true" />
+    <uses-permission
+        android:name="android.permission.VIBRATE"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
