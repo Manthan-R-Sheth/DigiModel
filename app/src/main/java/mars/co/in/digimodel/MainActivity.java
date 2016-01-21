@@ -50,11 +50,13 @@ public class MainActivity extends AppCompatActivity {
     Socket client=null;
     OutputStream outputStream;
     DataOutputStream dataOutputStream;
+    double xdisp=0,xv=0,xu=0,dt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        lastupdate=System.currentTimeMillis();
         startActivity(new Intent("android.settings.WIFI_SETTINGS"));
         msensorManager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
         mapping();
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 if(mysensor.getType()==Sensor.TYPE_ACCELEROMETER){
                     long curtime= System.currentTimeMillis();
                     if((curtime-lastupdate)>100) {
+                        dt=curtime-lastupdate;
                         lastupdate = curtime;
                         final double alpha = 0.8;
 
@@ -85,9 +88,14 @@ public class MainActivity extends AppCompatActivity {
                         linear_acceleration[0] = event.values[0] - gravity[0];
                         linear_acceleration[1] = event.values[1] - gravity[1];
                         linear_acceleration[2] = event.values[2] - gravity[2];
-                        xvalue.setText(linear_acceleration[0] + "");
-                        yvalue.setText(linear_acceleration[1] + "");
-                        zvalue.setText(linear_acceleration[2] + "");
+                        if(linear_acceleration[0]>0.5 || linear_acceleration[0]<-0.5)
+                        {
+                        xv+=(linear_acceleration[0]*dt/1000);
+//                        xdisp=(Math.pow(xv,2)-Math.pow(xu,2))/(2*linear_acceleration[0]);
+                        xdisp+=(xv*dt/1000)+(0.5*linear_acceleration[0]*Math.pow(dt,2)/1000000);}
+                        xvalue.setText(xv + "");
+                        yvalue.setText(xdisp + "");
+                        zvalue.setText(linear_acceleration[0] + "");
                     }
 
                 }
