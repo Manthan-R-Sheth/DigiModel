@@ -33,6 +33,8 @@ import java.net.Socket;
 import java.util.List;
 import java.util.Set;
 
+
+
 public class MainActivity extends AppCompatActivity {
 
     private SensorManager msensorManager;
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         gravity=new double[3];
         linear_acceleration=new double[3];
         msensor=msensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        msensorg=msensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        msensorg = msensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         msensorManager.registerListener(mGyroSensorListener,msensorg,SensorManager.SENSOR_DELAY_NORMAL);
         msensorManager.registerListener(mAccelerometerSensorListener,msensor,SensorManager.SENSOR_DELAY_NORMAL);
 
