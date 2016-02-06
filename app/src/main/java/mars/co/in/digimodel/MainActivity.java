@@ -24,12 +24,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -53,6 +58,11 @@ public class MainActivity extends AppCompatActivity {
     OutputStream outputStream;
     DataOutputStream dataOutputStream;
     double xdisp=0,xv=0,xu=0,dt;
+    DataPoint dp[];
+    LineGraphSeries<DataPoint> series;
+    GraphView graph;
+    ArrayList <DataPoint> arrayList;
+    int i=3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +79,18 @@ public class MainActivity extends AppCompatActivity {
         msensorManager.registerListener(mGyroSensorListener,msensorg,SensorManager.SENSOR_DELAY_NORMAL);
         msensorManager.registerListener(mAccelerometerSensorListener,msensor,SensorManager.SENSOR_DELAY_NORMAL);
 
+        arrayList= new ArrayList<DataPoint>();
+        arrayList.add(new DataPoint(0,0.1));
+        arrayList.add(new DataPoint(1,0.2));
+        arrayList.add(new DataPoint(2,0.1));
+
+        graph = (GraphView) findViewById(R.id.graph);
+         //series = new LineGraphSeries<DataPoint>(dp);
+       // graph.addSeries(series);
+
+
+
+
         mAccelerometerSensorListener= new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
@@ -76,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("Insidefirst","Accelero");
                 if(mysensor.getType()==Sensor.TYPE_ACCELEROMETER){
                     long curtime= System.currentTimeMillis();
-                    if((curtime-lastupdate)>100) {
+                    if((curtime-lastupdate)>1000) {
                         dt=curtime-lastupdate;
                         lastupdate = curtime;
                         final double alpha = 0.8;
@@ -98,6 +120,14 @@ public class MainActivity extends AppCompatActivity {
                         xvalue.setText(xv + "");
                         yvalue.setText(xdisp + "");
                         zvalue.setText(linear_acceleration[0] + "");
+//                        dp[i][0]=linear_acceleration[0];
+//                        dp[i][1]=i;
+                        dp= arrayList.toArray(new DataPoint[arrayList.size()]);
+                        graph.addSeries(new LineGraphSeries<DataPoint>(dp));
+                        arrayList.add(new DataPoint(i,linear_acceleration[0]));
+
+                        i++;
+
                     }
 
                 }
