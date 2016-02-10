@@ -166,9 +166,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                Toast.makeText(getApplication(),"Sending Started",Toast.LENGTH_LONG).show();
-                wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-                dhcpInfo = wifiManager.getDhcpInfo();
-                new ConnectClientToServer().execute(Protocols.convertIntIPtoStringIP(dhcpInfo.serverAddress));
+                startService(new Intent(MainActivity.this,MyService.class));
+//                wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+//                dhcpInfo = wifiManager.getDhcpInfo();
+//                new ConnectClientToServer().execute(Protocols.convertIntIPtoStringIP(dhcpInfo.serverAddress));
 
             }
         });
