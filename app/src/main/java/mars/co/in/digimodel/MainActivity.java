@@ -24,12 +24,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -45,11 +49,11 @@ public class MainActivity extends AppCompatActivity {
     private float timestamp;
     SensorEventListener mAccelerometerSensorListener,mGyroSensorListener;
     Button start,stop;
-    WifiManager wifiManager;
-    DhcpInfo dhcpInfo;
-    Socket client=null;
-    OutputStream outputStream;
-    DataOutputStream dataOutputStream;
+//    WifiManager wifiManager;
+//    DhcpInfo dhcpInfo;
+//    Socket client=null;
+//    OutputStream outputStream;
+//    DataOutputStream dataOutputStream;
     double xdisp=0,xv=0,xu=0,dt;
 
     @Override
@@ -96,6 +100,12 @@ public class MainActivity extends AppCompatActivity {
                         xvalue.setText(xv + "");
                         yvalue.setText(xdisp + "");
                         zvalue.setText(linear_acceleration[0] + "");
+
+                        Double[] acc_co=new Double[3];
+                        acc_co[0]=linear_acceleration[0];
+                        acc_co[1]=linear_acceleration[0];
+                        acc_co[2]=linear_acceleration[0];
+                        new ConnectClientToServer().execute(acc_co);
                     }
 
                 }
@@ -166,10 +176,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                Toast.makeText(getApplication(),"Sending Started",Toast.LENGTH_LONG).show();
-                startService(new Intent(MainActivity.this,MyService.class));
+
 //                wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 //                dhcpInfo = wifiManager.getDhcpInfo();
-//                new ConnectClientToServer().execute(Protocols.convertIntIPtoStringIP(dhcpInfo.serverAddress));
+                new ConnectClientToServer().execute();
 
             }
         });
@@ -179,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(getApplication(),"Sending Stoped",Toast.LENGTH_LONG).show();
                 try {
-                    client.close();
+                    //client.close();
                 }
                 catch (Exception e){
                     Log.e("stopped",e.toString());
@@ -227,28 +237,44 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    class ConnectClientToServer extends AsyncTask<String,String,Boolean>{
+    class ConnectClientToServer extends AsyncTask<Double,String,Boolean>{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(getApplication(),"Socket Started",Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplication(),"Socket Started",Toast.LENGTH_LONG).show();
 
 
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Double... params) {
             try {
-                client=new Socket();
-                InetAddress inetAddress = InetAddress.getByName(params[0]);
-                client.connect(new InetSocketAddress(inetAddress,8080));
-                outputStream= client.getOutputStream();
-                dataOutputStream=new DataOutputStream(outputStream);
-                dataOutputStream.writeUTF(linear_acceleration[0]+"/");
-                dataOutputStream.flush();
+//                client=new Socket();
+//                InetAddress inetAddress = InetAddress.getByName(params[0]);
+//                client.connect(new InetSocketAddress(inetAddress,8080));
+//                outputStream= client.getOutputStream();
+//                dataOutputStream=new DataOutputStream(outputStream);
+//                dataOutputStream.writeUTF(linear_acceleration[0]+"/");
+//                dataOutputStream.flush();
+
+                List<NameValuePair> coordi = new ArrayList<NameValuePair>();
+//                coordi.add(new BasicNameValuePair("x", (int)(linear_acceleration[0])+""));
+//                coordi.add(new BasicNameValuePair("y", (int)(linear_acceleration[0])+""));
+//                coordi.add(new BasicNameValuePair("z", (int)(linear_acceleration[0])+""));
+
+                coordi.add(new BasicNameValuePair("x", params[0]+""));
+                coordi.add(new BasicNameValuePair("y", params[1]+""));
+                coordi.add(new BasicNameValuePair("z", params[2]+""));
+
+                ServiceHandler serviceClient = new ServiceHandler();
+
+                String json = serviceClient.makeServiceCall("http://192.168.0.109:8000/",
+                        ServiceHandler.POST, coordi);
+                Log.i("Response from server",json.toString());
+
             }
             catch (Exception e){
-                Log.e("IP address probs",e.toString());
+                Log.e("Connecting to server",e.toString());
             }
             return null;
         }
@@ -256,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            Toast.makeText(getApplication(),"Socket connection done",Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplication(),"Socket connection done",Toast.LENGTH_LONG).show();
 
         }
     }

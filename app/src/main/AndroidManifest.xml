@@ -30,7 +30,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <service android:enabled="true" android:name="mars.co.in.digimodel.MyService" />
 
         <activity android:name=".MainActivity" >
             <intent-filter>
