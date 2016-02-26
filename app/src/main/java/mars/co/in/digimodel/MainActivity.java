@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private long lastupdate=0;
     TextView xvalue,yvalue,zvalue,xvaluerot,yvaluerot,zvaluerot;
     double[] gravity,linear_acceleration;
+    int[] linear_acceleration_new;
     private static final float NS2S = 1.0f / 1000000000.0f;
     private final float[] deltaRotationVector = new float[4];
     private float timestamp;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         mapping();
         gravity=new double[3];
         linear_acceleration=new double[3];
+        linear_acceleration_new=new int[3];
         msensor=msensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         msensorg=msensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         msensorManager.registerListener(mGyroSensorListener,msensorg,SensorManager.SENSOR_DELAY_NORMAL);
@@ -89,9 +91,9 @@ public class MainActivity extends AppCompatActivity {
                         gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
 
                         // Remove the gravity contribution with the high-pass filter.
-                        linear_acceleration[0] = event.values[0] - gravity[0];
-                        linear_acceleration[1] = event.values[1] - gravity[1];
-                        linear_acceleration[2] = event.values[2] - gravity[2];
+                        linear_acceleration[0] = (event.values[0] - gravity[0]);
+                        linear_acceleration[1] = (event.values[1] - gravity[1]);
+                        linear_acceleration[2] = (event.values[2] - gravity[2]);
                         if(linear_acceleration[0]>0.5 || linear_acceleration[0]<-0.5)
                         {
                         xv+=(linear_acceleration[0]*dt/1000);
@@ -100,11 +102,14 @@ public class MainActivity extends AppCompatActivity {
                         xvalue.setText(xv + "");
                         yvalue.setText(xdisp + "");
                         zvalue.setText(linear_acceleration[0] + "");
+                        linear_acceleration_new[0]=(int)(linear_acceleration[0]*1000);
+                        linear_acceleration_new[1]=(int)(linear_acceleration[1]*1000);
+                        linear_acceleration_new[2]=(int)(linear_acceleration[2]*1000);
 
-                        Double[] acc_co=new Double[3];
-                        acc_co[0]=linear_acceleration[0];
-                        acc_co[1]=linear_acceleration[0];
-                        acc_co[2]=linear_acceleration[0];
+                        Integer[] acc_co=new Integer[3];
+                        acc_co[0]=linear_acceleration_new[0];
+                        acc_co[1]=linear_acceleration_new[1];
+                        acc_co[2]=linear_acceleration_new[2];
                         new ConnectClientToServer().execute(acc_co);
                     }
 
@@ -237,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    class ConnectClientToServer extends AsyncTask<Double,String,Boolean>{
+    class ConnectClientToServer extends AsyncTask<Integer,String,Boolean>{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -247,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Boolean doInBackground(Double... params) {
+        protected Boolean doInBackground(Integer... params) {
             try {
 //                client=new Socket();
 //                InetAddress inetAddress = InetAddress.getByName(params[0]);
