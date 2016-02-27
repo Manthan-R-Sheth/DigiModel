@@ -1,11 +1,7 @@
 package mars.co.in.digimodel;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -13,22 +9,25 @@ import android.hardware.SensorManager;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.ArrayList;
+
+
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.Viewport;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.DataOutputStream;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -37,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+
 public class MainActivity extends AppCompatActivity {
 
     private SensorManager msensorManager;
@@ -44,18 +44,22 @@ public class MainActivity extends AppCompatActivity {
     private long lastupdate=0;
     TextView xvalue,yvalue,zvalue,xvaluerot,yvaluerot,zvaluerot;
     double[] gravity,linear_acceleration;
-    int[] linear_acceleration_new;
     private static final float NS2S = 1.0f / 1000000000.0f;
     private final float[] deltaRotationVector = new float[4];
     private float timestamp;
     SensorEventListener mAccelerometerSensorListener,mGyroSensorListener;
     Button start,stop;
-//    WifiManager wifiManager;
-//    DhcpInfo dhcpInfo;
-//    Socket client=null;
-//    OutputStream outputStream;
-//    DataOutputStream dataOutputStream;
-    double xdisp=0,xv=0,xu=0,dt;
+
+    double dt;
+    int xdisp=0,ydisp=0,zdisp=0;
+    DataPoint dp[];
+    LineGraphSeries<DataPoint> series;
+    GraphView graph;
+    ArrayList <DataPoint> arrayList;
+    int i=3;
+    int counter;
+    double acceleration_run_avg[]=new double[3];
+    double threshold=1.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +71,27 @@ public class MainActivity extends AppCompatActivity {
         mapping();
         gravity=new double[3];
         linear_acceleration=new double[3];
-        linear_acceleration_new=new int[3];
         msensor=msensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        msensorg=msensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        msensorg = msensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         msensorManager.registerListener(mGyroSensorListener,msensorg,SensorManager.SENSOR_DELAY_NORMAL);
         msensorManager.registerListener(mAccelerometerSensorListener,msensor,SensorManager.SENSOR_DELAY_NORMAL);
+
+        arrayList= new ArrayList<DataPoint>();
+        arrayList.add(new DataPoint(0, 0.1));
+        arrayList.add(new DataPoint(1, 0.2));
+        arrayList.add(new DataPoint(2,0.1));
+
+        graph = (GraphView) findViewById(R.id.graph);
+        series=new LineGraphSeries<DataPoint>();
+        graph.addSeries(series);
+        // customize a little bit viewport
+        Viewport viewport = graph.getViewport();
+        viewport.setYAxisBoundsManual(true);
+        viewport.setMinY(-10);
+        viewport.setMaxY(10);
+        viewport.setScrollable(true);
+
+
 
         mAccelerometerSensorListener= new SensorEventListener() {
             @Override
@@ -80,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("Insidefirst","Accelero");
                 if(mysensor.getType()==Sensor.TYPE_ACCELEROMETER){
                     long curtime= System.currentTimeMillis();
-                    if((curtime-lastupdate)>100) {
+                    if((curtime-lastupdate)>10) {
                         dt=curtime-lastupdate;
                         lastupdate = curtime;
                         final double alpha = 0.8;
@@ -94,22 +114,57 @@ public class MainActivity extends AppCompatActivity {
                         linear_acceleration[0] = (event.values[0] - gravity[0]);
                         linear_acceleration[1] = (event.values[1] - gravity[1]);
                         linear_acceleration[2] = (event.values[2] - gravity[2]);
-                        if(linear_acceleration[0]>0.5 || linear_acceleration[0]<-0.5)
-                        {
-                        xv+=(linear_acceleration[0]*dt/1000);
-//                        xdisp=(Math.pow(xv,2)-Math.pow(xu,2))/(2*linear_acceleration[0]);
-                        xdisp+=(xv*dt/1000)+(0.5*linear_acceleration[0]*Math.pow(dt,2)/1000000);}
-                        xvalue.setText(xv + "");
-                        yvalue.setText(xdisp + "");
-                        zvalue.setText(linear_acceleration[0] + "");
-                        linear_acceleration_new[0]=(int)(linear_acceleration[0]*1000);
-                        linear_acceleration_new[1]=(int)(linear_acceleration[1]*1000);
-                        linear_acceleration_new[2]=(int)(linear_acceleration[2]*1000);
+
+                        if(counter!=5){
+                            acceleration_run_avg[0]+=linear_acceleration[0];
+                            acceleration_run_avg[1]+=linear_acceleration[1];
+                            acceleration_run_avg[2]+=linear_acceleration[2];
+                            counter++;
+                        }
+                        else{
+                            counter=0;
+
+                            if(acceleration_run_avg[0]>threshold)
+                            {
+                                xdisp+=1;
+                            }
+                            else if(acceleration_run_avg[0]<threshold*(-1)){
+                                xdisp-=1;
+                            }
+
+                            ///////////////////////////////////////////////
+                            if(acceleration_run_avg[1]>threshold)
+                            {
+                                ydisp+=1;
+                            }
+                            else if(acceleration_run_avg[1]<threshold*(-1)){
+                                ydisp-=1;
+                            }
+                            ///////////////////////////////////////////////
+                            if(acceleration_run_avg[2]>threshold)
+                            {
+                                zdisp+=1;
+                            }
+                            else if(acceleration_run_avg[2]<threshold*(-1)){
+                                zdisp-=1;
+                            }
+                            ///////////////////////////////////////////////
+
+                            series.appendData(new DataPoint(i++, xdisp), true, 10);
+
+                            acceleration_run_avg[0]=0;
+                            acceleration_run_avg[1]=0;
+                            acceleration_run_avg[2]=0;
+                        }
+
+                        xvalue.setText(xdisp + " ");
+                        yvalue.setText(ydisp + " ");
+                        zvalue.setText(zdisp + " ");
 
                         Integer[] acc_co=new Integer[3];
-                        acc_co[0]=linear_acceleration_new[0];
-                        acc_co[1]=linear_acceleration_new[1];
-                        acc_co[2]=linear_acceleration_new[2];
+                        acc_co[0]=xdisp;
+                        acc_co[1]=ydisp;
+                        acc_co[2]=zdisp;
                         new ConnectClientToServer().execute(acc_co);
                     }
 
@@ -246,26 +301,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            Toast.makeText(getApplication(),"Socket Started",Toast.LENGTH_LONG).show();
-
-
         }
 
         @Override
         protected Boolean doInBackground(Integer... params) {
             try {
-//                client=new Socket();
-//                InetAddress inetAddress = InetAddress.getByName(params[0]);
-//                client.connect(new InetSocketAddress(inetAddress,8080));
-//                outputStream= client.getOutputStream();
-//                dataOutputStream=new DataOutputStream(outputStream);
-//                dataOutputStream.writeUTF(linear_acceleration[0]+"/");
-//                dataOutputStream.flush();
 
                 List<NameValuePair> coordi = new ArrayList<NameValuePair>();
-//                coordi.add(new BasicNameValuePair("x", (int)(linear_acceleration[0])+""));
-//                coordi.add(new BasicNameValuePair("y", (int)(linear_acceleration[0])+""));
-//                coordi.add(new BasicNameValuePair("z", (int)(linear_acceleration[0])+""));
 
                 coordi.add(new BasicNameValuePair("x", params[0]+""));
                 coordi.add(new BasicNameValuePair("y", params[1]+""));
@@ -287,8 +329,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-//            Toast.makeText(getApplication(),"Socket connection done",Toast.LENGTH_LONG).show();
-
         }
     }
 }
