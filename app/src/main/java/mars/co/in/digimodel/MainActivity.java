@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
 
                 ServiceHandler serviceClient = new ServiceHandler();
 
-                String json = serviceClient.makeServiceCall("http://192.168.0.109:8000/",
+                String json = serviceClient.makeServiceCall("http://192.168.150.4:8000/",
                         ServiceHandler.POST, coordi);
                 Log.i("Response from server",json.toString());
 
