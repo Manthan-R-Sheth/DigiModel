@@ -48,12 +48,16 @@ public class MainActivity extends AppCompatActivity {
     Socket client=null;
     OutputStream outputStream;
     DataOutputStream dataOutputStream;
-    double xdisp=0,xv=0,xu=0,dt;
+    double xv=0,xu=0,dt;
+    double xdisp=0,ydisp=0,zdisp=0;
     DataPoint dp[];
     LineGraphSeries<DataPoint> series;
     GraphView graph;
     ArrayList <DataPoint> arrayList;
     int i=3;
+    int counter;
+    double acceleration_run_avg[]=new double[3];
+    double threshold=1.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
         // customize a little bit viewport
         Viewport viewport = graph.getViewport();
         viewport.setYAxisBoundsManual(true);
-        viewport.setMinY(-100);
-        viewport.setMaxY(100);
+        viewport.setMinY(-10);
+        viewport.setMaxY(10);
         viewport.setScrollable(true);
 
 
@@ -94,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("Insidefirst","Accelero");
                 if(mysensor.getType()==Sensor.TYPE_ACCELEROMETER){
                     long curtime= System.currentTimeMillis();
-                    if((curtime-lastupdate)>1000) {
+                    if((curtime-lastupdate)>10) {
                         dt=curtime-lastupdate;
                         lastupdate = curtime;
                         final double alpha = 0.8;
@@ -108,22 +112,65 @@ public class MainActivity extends AppCompatActivity {
                         linear_acceleration[0] = event.values[0] - gravity[0];
                         linear_acceleration[1] = event.values[1] - gravity[1];
                         linear_acceleration[2] = event.values[2] - gravity[2];
-                        if(linear_acceleration[0]>0.5 || linear_acceleration[0]<-0.5)
-                        {
-                        xv+=(linear_acceleration[0]*1000/1000);
+
+
+
+                        if(counter!=5){
+                            acceleration_run_avg[0]+=linear_acceleration[0];
+                            acceleration_run_avg[1]+=linear_acceleration[1];
+                            acceleration_run_avg[2]+=linear_acceleration[2];
+                            counter++;
+                        }
+                        else{
+                            counter=0;
+
+                            if(acceleration_run_avg[0]>threshold)
+                            {
+                                xdisp+=1;
+                            }
+                            else if(acceleration_run_avg[0]<threshold*(-1)){
+                                xdisp-=1;
+                            }
+
+                            ///////////////////////////////////////////////
+                            if(acceleration_run_avg[1]>threshold)
+                            {
+                                ydisp+=1;
+                            }
+                            else if(acceleration_run_avg[1]<threshold*(-1)){
+                                ydisp-=1;
+                            }
+                            ///////////////////////////////////////////////
+                            if(acceleration_run_avg[2]>threshold)
+                            {
+                                zdisp+=1;
+                            }
+                            else if(acceleration_run_avg[2]<threshold*(-1)){
+                                zdisp-=1;
+                            }
+                            ///////////////////////////////////////////////
+
+                            series.appendData(new DataPoint(i++, xdisp), true, 10);
+
+                            acceleration_run_avg[0]=0;
+                            acceleration_run_avg[1]=0;
+                            acceleration_run_avg[2]=0;
+                        }
+
 //                        xdisp=(Math.pow(xv,2)-Math.pow(xu,2))/(2*linear_acceleration[0]);
-                        xdisp+=(xv*dt/1000)+(0.5*linear_acceleration[0]*Math.pow(1000,2)/1000000);}
-                        xvalue.setText(xv + "");
-                        yvalue.setText(xdisp + "");
-                        zvalue.setText(linear_acceleration[0] + "");
-
-                        series.appendData(new DataPoint(i++, xdisp), true, 10);
-
-                        //i++;
-
-
+                      //  xdisp+=(xv*dt/1000)+(0.5*linear_acceleration[0]*Math.pow(1000,2)/1000000);}
+//                       if(xv>0){
+//
+//                           xdisp+=1;
+//                       }
+//                        else if(xv<0){
+//                           xdisp-=1;
+//                       }
 
 
+                        xvalue.setText(xdisp + "");
+                        yvalue.setText(ydisp + "");
+                        zvalue.setText(zdisp + "");
 
                     }
 
