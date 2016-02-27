@@ -1,11 +1,7 @@
 package mars.co.in.digimodel;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -13,31 +9,26 @@ import android.hardware.SensorManager;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.ArrayList;
+
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.io.DataOutputStream;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 
 
 public class MainActivity extends AppCompatActivity {
@@ -80,14 +71,19 @@ public class MainActivity extends AppCompatActivity {
         msensorManager.registerListener(mAccelerometerSensorListener,msensor,SensorManager.SENSOR_DELAY_NORMAL);
 
         arrayList= new ArrayList<DataPoint>();
-        arrayList.add(new DataPoint(0,0.1));
-        arrayList.add(new DataPoint(1,0.2));
+        arrayList.add(new DataPoint(0, 0.1));
+        arrayList.add(new DataPoint(1, 0.2));
         arrayList.add(new DataPoint(2,0.1));
 
         graph = (GraphView) findViewById(R.id.graph);
-         //series = new LineGraphSeries<DataPoint>(dp);
-       // graph.addSeries(series);
-
+        series=new LineGraphSeries<DataPoint>();
+        graph.addSeries(series);
+        // customize a little bit viewport
+        Viewport viewport = graph.getViewport();
+        viewport.setYAxisBoundsManual(true);
+        viewport.setMinY(-100);
+        viewport.setMaxY(100);
+        viewport.setScrollable(true);
 
 
 
@@ -114,19 +110,20 @@ public class MainActivity extends AppCompatActivity {
                         linear_acceleration[2] = event.values[2] - gravity[2];
                         if(linear_acceleration[0]>0.5 || linear_acceleration[0]<-0.5)
                         {
-                        xv+=(linear_acceleration[0]*dt/1000);
+                        xv+=(linear_acceleration[0]*1000/1000);
 //                        xdisp=(Math.pow(xv,2)-Math.pow(xu,2))/(2*linear_acceleration[0]);
-                        xdisp+=(xv*dt/1000)+(0.5*linear_acceleration[0]*Math.pow(dt,2)/1000000);}
+                        xdisp+=(xv*dt/1000)+(0.5*linear_acceleration[0]*Math.pow(1000,2)/1000000);}
                         xvalue.setText(xv + "");
                         yvalue.setText(xdisp + "");
                         zvalue.setText(linear_acceleration[0] + "");
-//                        dp[i][0]=linear_acceleration[0];
-//                        dp[i][1]=i;
-                        dp= arrayList.toArray(new DataPoint[arrayList.size()]);
-                        graph.addSeries(new LineGraphSeries<DataPoint>(dp));
-                        arrayList.add(new DataPoint(i,linear_acceleration[0]));
 
-                        i++;
+                        series.appendData(new DataPoint(i++, xdisp), true, 10);
+
+                        //i++;
+
+
+
+
 
                     }
 
