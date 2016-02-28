@@ -20,13 +20,10 @@ app.post('/', function(req, res) {
 });
 
 app.get('/data.txt',function(req,res){
-	fs.readFile('data.txt','utf8',function(err,contents){
-		res.send(contents);
-        fs.write('data.txt',"",function (err){
-        if (err) console.log(err);
-        });
-	});
-
-
+    fs.readFile('data.txt','utf8',function(err,contents){
+        res.send(contents);
+        var filePath = "data.txt"; 
+        fs.unlink(filePath);
+    });
 });
 console.log("Server is started");
